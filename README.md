@@ -1,4 +1,4 @@
-## Artsy's GraphLQ Workshop
+## Artsy's GraphQL Workshop
 
 **Who is this aimed at:** Engineering Collaborators like design, marketing, product and anyone who is interested in
 how the pieces come together with our API.
