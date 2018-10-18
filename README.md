@@ -326,7 +326,7 @@ That opens up the GraphQL app. First, let's just to Chrome. Open the artsy websi
 1. In the bottom half of the window, there is a section called "Console". You want to run this code in there:
 
    ```js
-   window.sd.ARTSY_XAPP_TOKEN
+   sd.CURRENT_USER.accessToken
    ```
 1. This will output something like:
 
@@ -358,4 +358,40 @@ Let's verify this by running this query:
   }
 }
 ```
+
+If you get a response like:
+
+```json
+{
+  "data": {
+    "me": null
+  }
+}
+```
+
+Then the header for your access token is not hooked up correctly.
+
+##### Now you're connected
+
+Let's take a look at your followed Artists:
+
+```graphql
+{
+  me {
+    follow_artists {
+      artists {
+        name
+      }
+    }
+  }
+}
+```
+
+Nearly all of the information related to a user account is structured inside the `me {`.
+
+## What now?
+
+Ideally, I'd like some ideas on bits of data we can look up, and I'll try show how to find it.
+
+Other than that, I've left a bunch of example queries in the [`examples/`](examples) folder in this repo.
 

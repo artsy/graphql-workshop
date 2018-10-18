@@ -1,0 +1,12 @@
+# Grabs 5 of your most ercent saved artworks
+{
+  me {
+    name
+    email
+    follow_artists {
+      artists {
+        name
+      }
+    }
+  }
+}
