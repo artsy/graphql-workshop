@@ -73,9 +73,22 @@ GraphQL's syntax aims to emulate the shape of the JSON data that you're going to
 
 ```js
 if (name == "Banksy") {
-  doSomething()
+  doSomethingJustForBanksy()
 }
 ```
+
+Where the code inside the braces (`{` `}`) will only run when that `if` statement is true. In the case of GraphQL,
+this is what happens when you want to get more information from something.
+
+```graphql
+{
+  # global scope
+  popular_artists {
+    # inside here we can access properties on the PopularArtists type
+  }
+}
+```
+
 
 It roughly looks like:
 
@@ -91,17 +104,6 @@ It roughly looks like:
 We call the text inside the braces a "field", so in our current case, there is a field `popular_artists`. That has
 fields `artists`, and that has fields like `name`.
 
-Where the code inside the braces (`{` `}`) will only run when that `if` statement is true. In the case of GraphQL,
-this is what happens when you want to get more information from something.
-
-```graphql
-{
-  # global scope
-  popular_artists {
-    # inside here we can access properties on the PopularArtists type
-  }
-}
-```
 
 So we start at global scope, which has things like `artist`, `artwork`, `popular_artists` and `order` then we start
 narrowing down the data we want.
