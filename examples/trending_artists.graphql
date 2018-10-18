@@ -1,0 +1,8 @@
+# Look for trending artists based on inquiries
+{
+	trending_artists(name: ARTIST_INQUIRY){
+    artists {
+      name
+    }
+  }
+}
