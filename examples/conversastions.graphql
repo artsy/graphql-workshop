@@ -1,0 +1,16 @@
+# This will get the first 5 conversations and show thje last message for them
+# 
+# You need to be logged in to make this work
+{
+	me {
+    conversations(first:5) {
+      totalUnreadCount
+      
+      edges {
+        node {
+          last_message
+        }
+      }
+    }
+  }
+}

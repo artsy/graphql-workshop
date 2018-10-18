@@ -77,6 +77,20 @@ if (name == "Banksy") {
 }
 ```
 
+It roughly looks like:
+
+```graphql
+{
+  field_obj {
+    field_1
+    field_2
+  }
+}
+```
+
+We call the text inside the braces a "field", so in our current case, there is a field `popular_artists`. That has
+fields `artists`, and that has fields like `name`.
+
 Where the code inside the braces (`{` `}`) will only run when that `if` statement is true. In the case of GraphQL,
 this is what happens when you want to get more information from something.
 
@@ -163,15 +177,7 @@ resolver that doesn't have children:
 ```graphql
 {
   filter_artworks(aggregations: [TOTAL, PRICE_RANGE], acquireable: true, at_auction: false) {
-    aggregations {
-      counts {
-        name
-        count
-      }
-    }
-
     hits {
-      id
       title
       image {
         url(version: "original")
@@ -281,3 +287,75 @@ artwork(id: "christo-the-gates-project-for-central-park-5") {
 It's a lot of data, but it's a complex page. We do other work on the page, but this gets the main artwork metadata.
 
 ##### Docs
+
+So, we know enough to be dangerous. Now what? I think it's worth digging into the how we can figure out what how to
+find things we're interested in.
+
+**Using the sidebar**
+
+The sidebar on the left represents the types of objects that exist inside our API. In simple, everything is a type.
+There are two "root" types `Query` and `Mutation`. A mutation, roughly, represents a change to the database, like
+following an Artist.
+
+We're interested in the other: `Query`. If you click on the word `Query` in the right sidebar, it will show you all
+of the available fields. These are the things that you can start your query with from the global scope.
+
+This gives you the ability to jump through the connections between things without writing code, and you can see our
+docs about what things are and how they come together.
+
+**Guess by typing**
+
+Generally, I work this way.
+
+##### Logging in
+
+We're currently working with all public data. Sometimes, you'll need to log in with your user account. This is a
+bit tricky. To do this you're going to need to set up some request headers. This is a bit of a thing, sorry. I
+might be able to improve this in the future, but for now you'll need to download an app.
+
+1. Go here: https://electronjs.org/apps/graphiql
+1. Click on `GraphiQL-0.7.x.dmg` in the sidebar
+1. Click on the new DMG in your downloads
+1. Drag the app into Applications
+1. Open it from your Applications folder
+
+That opens up the GraphQL app. First, let's just to Chrome. Open the artsy website
+[artsy.net](https://www.artsy.net/) and we need to go into the developer tools. 
+
+1. Press `alt + cmd + i`, this should open up a window that represents the developer tools for Chrome
+1. In the bottom half of the window, there is a section called "Console". You want to run this code in there:
+
+   ```js
+   window.sd.ARTSY_XAPP_TOKEN
+   ```
+1. This will output something like:
+
+  ```js
+  "eyJ0eXAiOiJKV4QiLCiJIUzI1NiJ9.asdaffvcsdkjsbksg .bY8n_s0dK6P6VHASDA3gtcV7QVi_iTx2GXr58mCzk"
+  ```
+
+1. Select the text and copy it.
+
+Now we have your access token, let's add it to the GraphiQL app. 
+
+1. Click on "Edit HTTP Headers"
+1. Click on "Add Header"
+1. Paste your token in the "Header Value"
+1. Set the "Header name" to be "x-access-token"
+1. Hit save
+1. Click outside of the white box to get rid of the modal
+1. Set the GraphQL Endpoint to be: https://metaphysics-production.artsy.net/
+
+OK! Now you are logged in.
+
+Let's verify this by running this query:
+
+```graphql
+{
+  me {
+    name
+    email
+  }
+}
+```
+

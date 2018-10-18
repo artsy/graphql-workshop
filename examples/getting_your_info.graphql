@@ -1,0 +1,7 @@
+# This asks for information about the current user
+{
+  me {
+    name
+    email
+  }
+}
