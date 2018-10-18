@@ -47,7 +47,6 @@ We're going to use GraphQL to get info on popular Artists at Artsy.
 JSON-like. What is JSON?
 
 ```json
-{
   {
   "data": {
     "popular_artists": {
@@ -61,7 +60,6 @@ JSON-like. What is JSON?
       ]
     }
   }
-}
 ```
 
 JSON is used to communicate between nearly all of our different services, it's considered a human-readable data
@@ -151,7 +149,7 @@ Using a constant for the `trending_artists` name:
 
 ```graphql
 {
-	trending_artists(name: ARTIST_INQUIRY){
+  trending_artists(name: ARTIST_INQUIRY) {
     artists {
       name
     }
@@ -159,8 +157,8 @@ Using a constant for the `trending_artists` name:
 }
 ```
 
-Using an array of constants for the `filter_artworks` name, having some boolean values, and including params on 
-a resolver that doesn't have children: 
+Using an array of constants for the `filter_artworks` name, having some boolean values, and including params on a
+resolver that doesn't have children:
 
 ```graphql
 {
@@ -171,12 +169,12 @@ a resolver that doesn't have children:
         count
       }
     }
-    
+
     hits {
       id
       title
-			image {
-        url(version:"original")
+      image {
+        url(version: "original")
       }
       price
       artist_names
@@ -283,5 +281,3 @@ artwork(id: "christo-the-gates-project-for-central-park-5") {
 It's a lot of data, but it's a complex page. We do other work on the page, but this gets the main artwork metadata.
 
 ##### Docs
-
-
