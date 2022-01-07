@@ -1,0 +1,16 @@
+# Grabs 5 of your most ercent saved artworks
+{
+  me {
+    name
+    email
+    followsAndSaves {
+      artworksConnection(first:5) {
+        edges {
+          node {
+            artistNames
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,8 +2,8 @@
 {
   # See how the aggregations is a list of different things we care about, not just one
   # and there are other options we care about making sure it becomes buy now works.
-  filter_artworks(aggregations: [TOTAL, PRICE_RANGE], acquireable: true, at_auction: false) {
-    
+  artworksConnection(aggregations: [TOTAL, PRICE_RANGE], acquireable: true, atAuction: false) {
+
     # This is an object that represents the numbers to show in a filter list
     aggregations {
       counts {
@@ -11,19 +11,22 @@
         count
       }
     }
-    
+
     # The results from the search, they will all be artworks
     # our naming is not consistent, so this could also be called 'artworks' - but hits makes sense
     # for this context
-    hits {
-      id
-      title
-			image {
-        # Get a particular _type_ of image from our servers
-        url(version:"original")
+    edges {
+      node {
+      	slug
+      	title
+				image {
+        	# Get a particular _type_ of image from our servers
+        	url(version:"original")
+      	}
+      	price
+      	artistNames
       }
-      price
-      artist_names
     }
   }
 }
+

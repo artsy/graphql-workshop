@@ -1,0 +1,8 @@
+# Get 1 popular artist
+{
+  highlights {
+    popularArtists(size: 1) {
+      name
+    }
+  }
+}

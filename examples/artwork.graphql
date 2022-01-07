@@ -2,14 +2,14 @@
 {
   artwork(id: "christo-the-gates-project-for-central-park-5") {
     # Useful IDs
-    id
-    _id
+    slug
+    internalID
 
    # Eigen only supports 1 artist on an Artwork, ideally this would be 'artists'
     artist {
       #  Enough information on an Artist to show the metadata
-      id
-      _id
+      slug
+      internalID
       name
       years
       birthday
@@ -19,15 +19,15 @@
       image {
         url
       }
-      sortable_id
+      sortableID
     }
 
     # The partner metadata so we can link out to them and show some info
     partner {
       name
-      id
-      default_profile_id
-      is_default_profile_public
+      slug
+      defaultProfileID
+      isDefaultProfilePublic
       type
       href
     }
@@ -35,18 +35,17 @@
     # We need information about the Artwork's image to do view in room, AR, or
     # the tiled zoom
     images {
-      id
-      image_versions
-      image_url
-      is_default
-      original_height
-      original_width
-      aspect_ratio
-      max_tiled_height
-      max_tiled_width
-      tile_size
-      tile_base_url
-      tile_format
+      imageVersions
+      imageURL
+      isDefault
+      originalHeight
+      originalWidth
+      aspectRatio
+      maxTiledHeight
+      maxTiledWidth
+      tileSize
+      tileBaseURL
+      tileFormat
     }
 
     # Useful for view in room / AR
@@ -56,16 +55,15 @@
     }
 
     # Metadata about special casing info
-    attribution_class {
+    attributionClass {
       name
     }
 
     # So we can showcase the edition sets
-    edition_sets {
-      id
-      sale_message
-      is_sold
-      is_for_sale
+    editionSets {
+      saleMessage
+      isSold
+      isForSale
       dimensions {
         in
         cm
@@ -74,19 +72,17 @@
 
     # General information for showing the work in the right state
     availability
-    additional_information
-    can_share_image
+    additionalInformation
     category
-    collecting_institution
+    collectingInstitution
     date
-    exhibition_history
-    edition_of
-    image_rights
-    is_for_sale
-    is_price_hidden
-    is_sold
-    is_inquireable
-    is_acquireable
+    exhibitionHistory
+    editionOf
+    imageRights
+    isForSale
+    isPriceHidden
+    isSold
+    isInquireable
     shippingInfo
     shippingOrigin
     literature
@@ -94,7 +90,7 @@
     price
     provenance
     published
-    sale_message
+    saleMessage
     series
     signature
     title

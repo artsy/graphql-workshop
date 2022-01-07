@@ -25,17 +25,17 @@ how the pieces come together with our API.
 
 We're going to use GraphQL to get info on popular Artists at Artsy.
 
-1. Open up [Metaphysics Production](https://metaphysics-production.artsy.net/)
+1. Open up [Metaphysics Production](https://metaphysics-production.artsy.net/v2)
 1. Add the following code:
 
    ```graphql
    {
-     popular_artists {
-       artists {
-         name
-       }
-     }
-   }
+      highlights {
+        popularArtists(size: 1) {
+          name
+        }
+      }
+    }
    ```
 
 1. Go through the syntax
@@ -49,15 +49,16 @@ JSON-like. What is JSON?
 ```json
   {
   "data": {
-    "popular_artists": {
-      "artists": [
-        {
-          "name": "Pablo Picasso"
-        },
-        {
-          "name": "Banksy"
-        },
-      ]
+    "highlights": {
+      "popularArtists": [
+          {
+            "name": "Pablo Picasso"
+          },
+          {
+            "name": "Banksy"
+          },
+        ]
+      }
     }
   }
 ```
@@ -83,7 +84,7 @@ this is what happens when you want to get more information from something.
 ```graphql
 {
   # global scope
-  popular_artists {
+  popularArtists {
     # inside here we can access properties on the PopularArtists type
   }
 }
@@ -94,9 +95,9 @@ It roughly looks like:
 
 ```graphql
 {
-  field_obj {
-    field_1
-    field_2
+  fieldObj {
+    field1
+    field2
   }
 }
 ```
@@ -113,20 +114,20 @@ So, with this query:
 ```graphql
 {
   # global scope
-
-  popular_artists {
+  highlights {
     # PopularArtists
+    popularArtists {
 
-    artists {
       # A list of Artists
       # Artist scope
+      artists {
+        name
 
-      name
-      artworks {
         # A list of Artworks
         # Artwork scope
-
-        title
+        artworks {
+          title
+        }
       }
     }
   }
@@ -139,17 +140,13 @@ artists' artworks, which asks for the artist's for those artworks and so on)
 ##### Optional Params
 
 Like the if statement in JavaScript, GraphQL uses `(` and `)` to contain arguments. Let's change out
-`popular_artists` query to include params:
+`popularArtists` query to include params:
 
 ```graphql
 {
-  popular_artists(size: 1) {
-    artists {
+  highlights {
+    popularArtists(size: 1) {
       name
-
-      artworks {
-        title
-      }
     }
   }
 }
@@ -161,31 +158,21 @@ JavaScript (but with names.)
 These can be simple, but sometimes aren't because we use some advanced GraphQL features. Here are some small
 queries that have different styles of params.
 
-Using a constant for the `trending_artists` name:
-
-```graphql
-{
-  trending_artists(name: ARTIST_INQUIRY) {
-    artists {
-      name
-    }
-  }
-}
-```
-
-Using an array of constants for the `filter_artworks` name, having some boolean values, and including params on a
+Using an array of constants for the `artworksConnection` name, having some boolean values, and including params on a
 resolver that doesn't have children:
 
 ```graphql
 {
-  filter_artworks(aggregations: [TOTAL, PRICE_RANGE], acquireable: true, at_auction: false) {
-    hits {
-      title
-      image {
-        url(version: "original")
+  artworksConnection(first: 5, aggregations: [TOTAL, PRICE_RANGE], acquireable: true, atAuction: false) {
+    edges {
+      node {
+        title
+        image {
+          url(version: "original")
+        }
+        price
+        artistNames
       }
-      price
-      artist_names
     }
   }
 }
@@ -196,94 +183,93 @@ resolver that doesn't have children:
 This is how we build a page on the app/website - this is the query used by the Artwork page on the iPhone app:
 
 ```graphql
-artwork(id: "christo-the-gates-project-for-central-park-5") {
-  id
-  _id
+{
+  artwork(id: "christo-the-gates-project-for-central-park-5") {
+    slug
+    internalID
 
-  artist {
-    id
-    _id
-    name
-    years
-    birthday
-    nationality
-    blurb
-    image {
-      url
+    artist {
+      slug
+      internalID
+      name
+      years
+      birthday
+      nationality
+      blurb
+      image {
+        url
+      }
+      sortableID
     }
-    sortable_id
-  }
 
-  partner {
-    name
-    id
-    default_profile_id
-    is_default_profile_public
-    type
-    href
-  }
+    partner {
+      name
+      slug
+      defaultProfileID
+      isDefaultProfilePublic
+      type
+      href
+    }
 
-  images {
-    id
-    image_versions
-    image_url
-    is_default
-    original_height
-    original_width
-    aspect_ratio
-    max_tiled_height
-    max_tiled_width
-    tile_size
-    tile_base_url
-    tile_format
-  }
+    images {
+      imageVersions
+      imageURL
+      isDefault
+      originalHeight
+      originalWidth
+      aspectRatio
+      maxTiledHeight
+      maxTiledWidth
+      tileSize
+      tileBaseURL
+      tileFormat
+    }
 
-  dimensions {
-    cm
-    in
-  }
-
-  attribution_class {
-    name
-  }
-
-  edition_sets {
-    id
-    sale_message
-    is_sold
-    is_for_sale
     dimensions {
-      in
       cm
+      in
     }
-  }
 
-  availability
-  additional_information
-  can_share_image
-  category
-  collecting_institution
-  date
-  exhibition_history
-  edition_of
-  image_rights
-  is_for_sale
-  is_price_hidden
-  is_sold
-  is_inquireable
-  is_acquireable
-  shippingInfo
-  shippingOrigin
-  literature
-  medium
-  price
-  provenance
-  published
-  sale_message
-  series
-  signature
-  title
+    attributionClass {
+      name
+    }
+
+    editionSets {
+      saleMessage
+      isSold
+      isForSale
+      dimensions {
+        in
+        cm
+      }
+    }
+
+    availability
+    additionalInformation
+    category
+    collectingInstitution
+    date
+    exhibitionHistory
+    editionOf
+    imageRights
+    isForSale
+    isPriceHidden
+    isSold
+    isInquireable
+    shippingInfo
+    shippingOrigin
+    literature
+    medium
+    price
+    provenance
+    published
+    saleMessage
+    series
+    signature
+    title
+  }
 }
+
 ```
 
 It's a lot of data, but it's a complex page. We do other work on the page, but this gets the main artwork metadata.
@@ -322,7 +308,7 @@ might be able to improve this in the future, but for now you'll need to download
 1. Open it from your Applications folder
 
 That opens up the GraphQL app. First, let's just to Chrome. Open the artsy website
-[artsy.net](https://www.artsy.net/) and we need to go into the developer tools. 
+[artsy.net](https://www.artsy.net/) and we need to go into the developer tools.
 
 1. Press `alt + cmd + i`, this should open up a window that represents the developer tools for Chrome
 1. In the bottom half of the window, there is a section called "Console". You want to run this code in there:
@@ -338,7 +324,7 @@ That opens up the GraphQL app. First, let's just to Chrome. Open the artsy websi
 
 1. Select the text and copy it.
 
-Now we have your access token, let's add it to the GraphiQL app. 
+Now we have your access token, let's add it to the GraphiQL app.
 
 1. Click on "Edit HTTP Headers"
 1. Click on "Add Header"
@@ -346,7 +332,7 @@ Now we have your access token, let's add it to the GraphiQL app.
 1. Set the "Header name" to be "x-access-token"
 1. Hit save
 1. Click outside of the white box to get rid of the modal
-1. Set the GraphQL Endpoint to be: https://metaphysics-production.artsy.net/
+1. Set the GraphQL Endpoint to be: https://metaphysics-production.artsy.net/v2
 
 OK! Now you are logged in.
 
@@ -380,7 +366,7 @@ Let's take a look at your followed Artists:
 ```graphql
 {
   me {
-    follow_artists {
+    followArtists {
       artists {
         name
       }
